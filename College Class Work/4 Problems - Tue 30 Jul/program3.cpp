@@ -1,7 +1,6 @@
 // Remove zeros from the number 430705 to form 4375
 
 #include <iostream>
-#include <string.h>
 using namespace std;
 
 int main()
