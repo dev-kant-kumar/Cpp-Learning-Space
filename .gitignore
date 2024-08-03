@@ -1,0 +1,13 @@
+# Visual Studio
+.vscode/
+*.code-workspace
+.vs/
+*.vcxproj*
+*.sln
+
+# Ignore Visual Studio directories and files recursively
+**/.vs/
+**/.vscode/
+**/*.code-workspace
+**/*.vcxproj*
+**/*.sln
