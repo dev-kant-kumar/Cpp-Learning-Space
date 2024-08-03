@@ -1,0 +1,1 @@
+// 3. Write a cpp program to remove zeros from 43705.

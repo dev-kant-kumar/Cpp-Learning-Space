@@ -1,0 +1,6 @@
+# Visual Studio
+.vscode/
+*.code-workspace
+.vs/
+*.vcxproj*
+*.sln
