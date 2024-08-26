@@ -1,0 +1,1 @@
+// 4. Define a function to accept two string as an argument and connect both the string and print the string.

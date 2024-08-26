@@ -1,0 +1,1 @@
+// 2. WAP to input a name and print the name is short form like : S.K Singh
