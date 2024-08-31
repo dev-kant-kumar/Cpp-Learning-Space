@@ -33,6 +33,9 @@ void addProduct();               // add product in store
 void displayAvailableProducts(); // display available products
 void UI();                       // display options available to perform on item list
 void addItem();                  // add item in item list
+void deleteItem();               // delete item from item list - update price to 0 and keep the item intact
+void getTotalValue();            // show total value of all items in item list
+void getCompleteList();          // show complete item list
 
 Product item[5];       // store is each product in store
 Product itemList[100]; // store the product added to item list
@@ -79,17 +82,23 @@ void UI()
 {
     int choice;
 
-    string options = " [1] - Add an item \n [2] - Delete an item \n [3] - Check item's total value \n [4] - See complete items list \n";
+    string options = " [0] - To exit \n [1] - Add an item \n [2] - Delete an item \n [3] - Check item's total value \n [4] - See complete items list \n";
 
     displayAvailableProducts();
 MainMenu:
     cout << "\033[1;35mSelect from these options for your order cart \033[0m\n\n";
     cout << options << endl;
+choiceMenu:
     cout << "\033[1;36mEnter your choice {like 1} : \033[0m";
     if (cin >> choice)
     {
         switch (choice)
         {
+        case 0:
+            cout << "\n";
+            cout << "You exited\n";
+            cout << "Bye Hope to see you again!\n\n";
+            break;
         case 1:
             cout << "\n";
             cout << setw(55) << "Adding item selected" << "Order List have : " << noOfItemInList << " items\n";
@@ -97,22 +106,30 @@ MainMenu:
             addItem();
             break;
         case 2:
-            cout << "\nDeleting item selected\n";
+            cout << "\n";
+            cout << setw(55) << "Deleting item selected" << "Order List have : " << noOfItemInList << " items\n";
             cout << "-----------------------------------------------------------------------------------";
-            // deleteItem();
+            deleteItem();
+            goto choiceMenu;
             break;
         case 3:
-            cout << "\nCheck item's total value selected\n";
+            cout << "\n";
+            cout << setw(55) << "Check item's total value selected" << "Order List have : " << noOfItemInList << " items\n";
             cout << "-----------------------------------------------------------------------------------";
+            getTotalValue();
+            goto choiceMenu;
             break;
 
         case 4:
-            cout << "\nSee complete items list selected\n";
+            cout << "\n";
+            cout << setw(55) << "See complete items list selected" << "Order List have : " << noOfItemInList << " items\n";
             cout << "-----------------------------------------------------------------------------------";
+            getCompleteList();
+            goto choiceMenu;
             break;
         default:
             Beep(750, 100);
-            cout << "\n\033[5;31mInvalid options entered! Enter from 1 to 4 only\033[0m\n";
+            cout << "\n\033[5;31mInvalid options entered! Enter from 1 to 4 only\033[0m\n\n";
             goto MainMenu;
         }
     }
@@ -187,4 +204,38 @@ addItemMenu:
         cout << "\n\033[5;31mOnly numbers are allowed \033[0m\n";
         // goto addItemMenu;
     }
+}
+
+void deleteItem()
+{
+    cout << "\n\n";
+}
+
+void getTotalValue()
+{
+    int totalPrice = 0;
+    for (int i = 0; i < noOfItemInList; i++)
+    {
+        totalPrice += itemList[i].product_price;
+    }
+
+    cout << "\nTotal value of your order list : " << totalPrice << "\n\n";
+    cout << "-----------------------------------------------------------------------------------\n\n";
+}
+
+void getCompleteList()
+{
+    cout << "\n\n";
+    cout << "_______________________________________________\n";
+    cout << left; // Left-align the text
+    cout << "| " << setw(15) << "\033[1;33mProduct Code\033[0m" << " | " << setw(15) << "\033[1;33mProduct Name\033[0m" << " | " << setw(15) << "\033[1;33mProduct Price\033[0m" << " |" << endl;
+
+    for (int i = 0; i < noOfItemInList; i++)
+    {
+        cout << "| " << setw(12) << itemList[i].product_code << " | " << setw(12) << itemList[i].product_name << " | " << setw(13) << itemList[i].product_price << " |\n";
+    }
+    cout << "_______________________________________________\n";
+
+    cout << "\n\n";
+    cout << "-----------------------------------------------------------------------------------\n\n";
 }
