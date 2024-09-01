@@ -43,11 +43,18 @@ Product item[5];       // store is each product in store
 Product itemList[100]; // store the product added to item list
 int noOfItemInList = 0;
 int totalPrice = 0;
+
 int main(int argc, char *argv[])
 {
-    commandHandler(argc, argv);
-    addProduct();
-    UI();
+    if (argc > 1)
+    {
+        commandHandler(argc, argv);
+    }
+    else
+    {
+        addProduct();
+        UI();
+    }
 
     return 0;
 }
@@ -67,7 +74,8 @@ void displayAvailableProducts()
 {
     system("cls");
 
-    cout << "\n\n\033[1;34mWelcome to ABC Store\033[0m\n\n";
+    cout << "\n\n"
+         << setw(100) << "\033[1;34mWelcome to ABC Store\033[0m\n\n";
     cout << "\033[1;32m  These item are available in stocks \033[0m\n";
     cout << "_______________________________________________\n";
     cout << left; // Left-align the text
@@ -111,14 +119,14 @@ choiceMenu:
         case 1:
             cout << intVal << endl;
             cout << "\n";
-            cout << setw(55) << "Adding item selected" << "Order List have : " << noOfItemInList << " items\n";
+            cout << "\033[1;37;42m " << setw(55) << "Adding item selected" << "Order List have : " << noOfItemInList << " items \033[0m\n";
             cout << "-----------------------------------------------------------------------------------";
             addItem();
             break;
         case 2:
             cout << intVal << endl;
             cout << "\n";
-            cout << setw(55) << "Deleting item selected" << "Order List have : " << noOfItemInList << " items\n";
+            cout << "\033[1;37;41m " << setw(55) << "Deleting item selected" << "Order List have : " << noOfItemInList << " items \033[0m\n";
             cout << "-----------------------------------------------------------------------------------";
             deleteItem();
             goto choiceMenu;
@@ -126,7 +134,7 @@ choiceMenu:
         case 3:
             cout << intVal << endl;
             cout << "\n";
-            cout << setw(55) << "Check item's total value selected" << "Order List have : " << noOfItemInList << " items\n";
+            cout << "\033[1;30;47m " << setw(55) << "Check item's total value selected" << "Order List have : " << noOfItemInList << " items \033[0m\n";
             cout << "-----------------------------------------------------------------------------------";
             getTotalValue();
             goto choiceMenu;
@@ -135,7 +143,7 @@ choiceMenu:
         case 4:
             cout << intVal << endl;
             cout << "\n";
-            cout << setw(55) << "See complete items list selected" << "Order List have : " << noOfItemInList << " items\n";
+            cout << "\033[1;32;47m " << setw(55) << "See complete items list selected" << "Order List have : " << noOfItemInList << " items \033[0m\n";
             cout << "-----------------------------------------------------------------------------------";
             getCompleteList();
             goto choiceMenu;
@@ -143,7 +151,7 @@ choiceMenu:
         default:
             cout << intVal << endl;
             MessageBeep(MB_ICONERROR);
-            cout << "\n\033[5;31mInvalid options entered! Enter from 1 to 4 only\033[0m\n\n";
+            cout << "\n\n\033[5;31mInvalid options entered! Enter from 1 to 4 only\033[0m\n\n";
             Sleep(1200);
             system("1.exe");
         }
@@ -151,7 +159,7 @@ choiceMenu:
     else
     {
         MessageBeep(MB_ICONERROR);
-        cout << "\n\033[5;31mInvalid input! Only numbers are allowed.\033[0m\n";
+        cout << "\n\n\033[5;31mInvalid input! Only numbers are allowed.\033[0m\n";
         Sleep(1200);
         system("1.exe");
     }
@@ -185,59 +193,106 @@ addItemMenu:
             // adding item in item list
             int product_code;
             cout << "\n\033[1;36mEnter product code : \033[0m";
-            cin >> product_code;
-
-            // check if the product exist with entered product code
-            bool matched = true;
-            for (int i = 0; i < 5; i++)
+            if (cin >> product_code)
             {
-                if (item[i].product_code == product_code)
+                // check if the product exist with entered product code
+                bool matched = true;
+                for (int i = 0; i < 5; i++)
                 {
-                    itemList[noOfItemInList].product_code = item[i].product_code;
-                    itemList[noOfItemInList].product_name = item[i].product_name;
-                    itemList[noOfItemInList].product_price = item[i].product_price;
-                    noOfItemInList++;
-                    MessageBeep(MB_OK); // confirm item is added
+                    if (item[i].product_code == product_code)
+                    {
+                        itemList[noOfItemInList].product_code = item[i].product_code;
+                        itemList[noOfItemInList].product_name = item[i].product_name;
+                        itemList[noOfItemInList].product_price = item[i].product_price;
+                        noOfItemInList++;
+                        MessageBeep(MB_OK); // confirm item is added
 
-                    cout
-                        << "\n"
-                        << itemList[noOfItemInList - 1].product_name << setw(60) << " \033[1;32mAdded to your order list\033[0m" << "\033[1;32mTotal item is order list : \033[0m" << noOfItemInList << "\n";
-                    cout << "-----------------------------------------------------------------------------------";
+                        cout
+                            << "\n"
+                            << itemList[noOfItemInList - 1].product_name << setw(60) << " \033[1;32mAdded to your order list\033[0m" << "\033[1;32mTotal item is order list : \033[0m" << noOfItemInList << "\n";
+                        cout << "-----------------------------------------------------------------------------------";
 
-                    goto addItemMenu;
+                        goto addItemMenu;
+                    }
+                    else
+                    {
+                        matched = false;
+                    }
                 }
-                else
+
+                if (matched == false)
                 {
-                    matched = false;
+                    MessageBeep(MB_ICONERROR);
+                    cout << "\n\n\033[5;31mEnter valid product code to add item \033[0m\n";
+                    goto addItem;
                 }
             }
-
-            if (matched == false)
+            else
             {
                 MessageBeep(MB_ICONERROR);
-                cout << "\n\033[5;31mEnter valid product code to add item \033[0m\n";
-                goto addItem;
+                cout << "\n\n\033[5;31mEnter valid product code only 3 digits allowed! \033[0m\n";
+                // goto addItem;
             }
         }
         else
         {
             MessageBeep(MB_ICONERROR);
-            cout << "\n\033[5;31mInvalid Input! Enter 0 or 1 only\033[0m\n";
+            cout << "\n\n\033[5;31mInvalid Input! Enter 0 or 1 only\033[0m\n";
             goto addItemMenu;
         }
     }
     else
     {
         MessageBeep(MB_ICONERROR);
-        cout << "\n\033[5;31mOnly numbers are allowed \033[0m\n";
-        // goto addItemMenu;
-        system("./1.exe");
+        cout << "\n\n\033[5;31mOnly numbers are allowed \033[0m\n";
+        Sleep(1000);
+        system("1.exe");
     }
 }
 
 void deleteItem()
 {
     cout << "\n\n";
+    int productCode;
+EnterProductCode:
+    cout
+        << "\033[1;36mEnter Product Code : \033[0m";
+    if (cin >> productCode)
+    {
+        // check if the product exist with entered product code
+        bool matched = true;
+        for (int i = 0; i < 5; i++)
+        {
+            if (item[i].product_code == productCode)
+            {
+                itemList[i].product_price = 0;
+                MessageBeep(MB_OK); // confirm item is added
+
+                cout
+                    << "\n"
+                    << itemList[i].product_name << setw(60) << " \033[1;32mDeleted from order list\033[0m" << "\033[1;32mTotal item is order list : \033[0m" << noOfItemInList - 1 << "\n";
+                cout << "-----------------------------------------------------------------------------------\n";
+                break; // so that only one product can be removed at once
+            }
+            else
+            {
+                matched = false;
+            }
+
+            if (matched == false)
+            {
+                MessageBeep(MB_ICONERROR);
+                cout << "\n\n\033[5;31mEnter valid product code to delete item \033[0m\n";
+                goto EnterProductCode;
+            }
+        }
+    }
+    else
+    {
+        MessageBeep(MB_ICONERROR);
+        cout << "\n\n\033[5;31mEnter valid product code to delete item only 3 digit allowed \033[0m\n";
+        // goto EnterProductCode;
+    }
 }
 
 void getTotalValue()
@@ -264,6 +319,7 @@ void getCompleteList()
         cout << "| " << setw(12) << itemList[i].product_code << " | " << setw(12) << itemList[i].product_name << " | " << setw(13) << itemList[i].product_price << " |\n";
     }
     cout << "_______________________________________________\n";
+    getTotalValue(); // calling so that totalPrice updated without checking total price so that can be used here in.
     cout << "Total Item : " << setw(18) << noOfItemInList << "Total Price : " << totalPrice << endl;
 
     cout << "\n\n";
@@ -272,4 +328,26 @@ void getCompleteList()
 
 void commandHandler(int argc, char *argv[])
 {
+    for (int i = 1; i < argc; i++)
+    {
+        if (strcmp(argv[i], "--help") == 0)
+        {
+            system("cls");
+            cout << "\n\n";
+            cout << setw(45) << " " << "welcome to help section\n";
+            cout << "____________________________________________________________________________________________________________________\n\n";
+            cout << "Help section is under development \n";
+            cout << "\n____________________________________________________________________________________________________________________\n\n";
+        }
+        else if (strcmp(argv[i], "--version") == 0)
+        {
+            cout << "\n\n\033[1;32mCurrent version is : v01xe1.0\033[0m\n\n";
+        }
+        else
+        {
+            cout << "\n\n";
+            cout << "\033[5;31mThis command is not recognized as any valid command \033[0m\n";
+            cout << "\033[1;34mSee help section to know more information of commands\033[0m\n";
+        }
+    }
 }
