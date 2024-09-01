@@ -29,20 +29,22 @@ public:
     }
 };
 
-void addProduct();               // add product in store
-void displayAvailableProducts(); // display available products
-void UI();                       // display options available to perform on item list
-void addItem();                  // add item in item list
-void deleteItem();               // delete item from item list - update price to 0 and keep the item intact
-void getTotalValue();            // show total value of all items in item list
-void getCompleteList();          // show complete item list
+void addProduct();                           // add product in store
+void displayAvailableProducts();             // display available products
+void UI();                                   // display options available to perform on item list
+void addItem();                              // add item in item list
+void deleteItem();                           // delete item from item list - update price to 0 and keep the item intact
+void getTotalValue();                        // show total value of all items in item list
+void getCompleteList();                      // show complete item list
+void commandHandler(int argc, char *argv[]); // handle command line argument to this program
 
 Product item[5];       // store is each product in store
 Product itemList[100]; // store the product added to item list
 int noOfItemInList = 0;
-
-int main()
+int totalPrice = 0;
+int main(int argc, char *argv[])
 {
+    commandHandler(argc, argv);
     addProduct();
     UI();
 
@@ -57,6 +59,7 @@ void addProduct()
     item[3].addProduct(104, "104A", 400);
     item[4].addProduct(105, "105A", 360);
     item[5].addProduct(106, "106A", 1300);
+    MessageBeep(MB_OK); // to confirm product is created
 }
 
 void displayAvailableProducts()
@@ -97,7 +100,9 @@ choiceMenu:
         case 0:
             cout << "\n";
             cout << "You exited\n";
-            cout << "Bye Hope to see you again!\n\n";
+            MessageBeep(MB_ICONQUESTION);
+            cout
+                << "Bye Hope to see you again!\n\n";
             break;
         case 1:
             cout << "\n";
@@ -128,15 +133,18 @@ choiceMenu:
             goto choiceMenu;
             break;
         default:
-            Beep(750, 100);
+            MessageBeep(MB_ICONERROR);
             cout << "\n\033[5;31mInvalid options entered! Enter from 1 to 4 only\033[0m\n\n";
-            goto MainMenu;
+            Sleep(1200);
+            system("1.exe");
         }
     }
     else
     {
-        Beep(750, 100);
+        MessageBeep(MB_ICONERROR);
         cout << "\n\033[5;31mInvalid input! Only numbers are allowed.\033[0m\n";
+        Sleep(1200);
+        system("1.exe");
     }
 }
 
@@ -145,7 +153,8 @@ void addItem()
 addItemMenu:
     int choice;
 
-    cout << "\n\033[1;35mSelect from these options \033[0m\n\n";
+    cout
+        << "\n\033[1;35mSelect from these options \033[0m\n\n";
     cout << "Enter 0 to exit and back to main menu \nEnter 1 to continue\n\n";
     cout << "\033[1;36mEnter your choice {like 1} : \033[0m";
 
@@ -174,9 +183,11 @@ addItemMenu:
                     itemList[noOfItemInList].product_name = item[i].product_name;
                     itemList[noOfItemInList].product_price = item[i].product_price;
                     noOfItemInList++;
+                    MessageBeep(MB_OK); // confirm item is added
 
-                    cout << "\n"
-                         << itemList[noOfItemInList - 1].product_name << setw(60) << " \033[1;32mAdded to your order list\033[0m" << "\033[1;32mTotal item is order list : \033[0m" << noOfItemInList << "\n";
+                    cout
+                        << "\n"
+                        << itemList[noOfItemInList - 1].product_name << setw(60) << " \033[1;32mAdded to your order list\033[0m" << "\033[1;32mTotal item is order list : \033[0m" << noOfItemInList << "\n";
                     cout << "-----------------------------------------------------------------------------------";
 
                     goto addItemMenu;
@@ -189,20 +200,24 @@ addItemMenu:
 
             if (matched == false)
             {
+                MessageBeep(MB_ICONERROR);
                 cout << "\n\033[5;31mEnter valid product code to add item \033[0m\n";
                 goto addItem;
             }
         }
         else
         {
+            MessageBeep(MB_ICONERROR);
             cout << "\n\033[5;31mInvalid Input! Enter 0 or 1 only\033[0m\n";
             goto addItemMenu;
         }
     }
     else
     {
+        MessageBeep(MB_ICONERROR);
         cout << "\n\033[5;31mOnly numbers are allowed \033[0m\n";
         // goto addItemMenu;
+        system("./1.exe");
     }
 }
 
@@ -213,7 +228,7 @@ void deleteItem()
 
 void getTotalValue()
 {
-    int totalPrice = 0;
+    // int totalPrice = 0;
     for (int i = 0; i < noOfItemInList; i++)
     {
         totalPrice += itemList[i].product_price;
@@ -235,7 +250,12 @@ void getCompleteList()
         cout << "| " << setw(12) << itemList[i].product_code << " | " << setw(12) << itemList[i].product_name << " | " << setw(13) << itemList[i].product_price << " |\n";
     }
     cout << "_______________________________________________\n";
+    cout << "Total Item : " << setw(18) << noOfItemInList << "Total Price : " << totalPrice << endl;
 
     cout << "\n\n";
     cout << "-----------------------------------------------------------------------------------\n\n";
+}
+
+void commandHandler(int argc, char *argv[])
+{
 }
