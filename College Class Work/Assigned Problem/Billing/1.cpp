@@ -8,6 +8,7 @@
 // 4 - displaying the entire list
 
 #include <iostream>
+#include <conio.h>
 #include <iomanip>
 #include <string>
 #include <windows.h>
@@ -93,11 +94,14 @@ MainMenu:
     cout << options << endl;
 choiceMenu:
     cout << "\033[1;36mEnter your choice {like 1} : \033[0m";
-    if (cin >> choice)
+    choice = _getch();
+    if (choice >= '0' && choice <= '9')
     {
-        switch (choice)
+        int intVal = choice - '0';
+        switch (intVal)
         {
         case 0:
+            cout << intVal << endl;
             cout << "\n";
             cout << "You exited\n";
             MessageBeep(MB_ICONQUESTION);
@@ -105,12 +109,14 @@ choiceMenu:
                 << "Bye Hope to see you again!\n\n";
             break;
         case 1:
+            cout << intVal << endl;
             cout << "\n";
             cout << setw(55) << "Adding item selected" << "Order List have : " << noOfItemInList << " items\n";
             cout << "-----------------------------------------------------------------------------------";
             addItem();
             break;
         case 2:
+            cout << intVal << endl;
             cout << "\n";
             cout << setw(55) << "Deleting item selected" << "Order List have : " << noOfItemInList << " items\n";
             cout << "-----------------------------------------------------------------------------------";
@@ -118,6 +124,7 @@ choiceMenu:
             goto choiceMenu;
             break;
         case 3:
+            cout << intVal << endl;
             cout << "\n";
             cout << setw(55) << "Check item's total value selected" << "Order List have : " << noOfItemInList << " items\n";
             cout << "-----------------------------------------------------------------------------------";
@@ -126,6 +133,7 @@ choiceMenu:
             break;
 
         case 4:
+            cout << intVal << endl;
             cout << "\n";
             cout << setw(55) << "See complete items list selected" << "Order List have : " << noOfItemInList << " items\n";
             cout << "-----------------------------------------------------------------------------------";
@@ -133,6 +141,7 @@ choiceMenu:
             goto choiceMenu;
             break;
         default:
+            cout << intVal << endl;
             MessageBeep(MB_ICONERROR);
             cout << "\n\033[5;31mInvalid options entered! Enter from 1 to 4 only\033[0m\n\n";
             Sleep(1200);
@@ -158,15 +167,20 @@ addItemMenu:
     cout << "Enter 0 to exit and back to main menu \nEnter 1 to continue\n\n";
     cout << "\033[1;36mEnter your choice {like 1} : \033[0m";
 
-    if (cin >> choice)
+    choice = _getch();
+    if (choice >= '0' && choice <= '9')
     {
-        if (choice == 0)
+        int intVal = choice - '0';
+
+        if (intVal == 0)
         {
+            cout << intVal;
             cout << "\nBack to Main Menu\n";
             UI();
         }
-        else if (choice == 1)
+        else if (intVal == 1)
         {
+            cout << intVal;
         addItem:
             // adding item in item list
             int product_code;
