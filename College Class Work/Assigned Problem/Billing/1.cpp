@@ -76,7 +76,7 @@ void displayAvailableProducts()
 
     cout << "\n\n"
          << setw(100) << "\033[1;34mWelcome to ABC Store\033[0m\n\n";
-    cout << "\033[1;32m  These item are available in stocks \033[0m\n";
+    cout << "\033[1;32m  These item are available in store \033[0m\n";
     cout << "_______________________________________________\n";
     cout << left; // Left-align the text
     cout << "| " << setw(15) << "\033[1;33mProduct Code\033[0m" << " | " << setw(15) << "\033[1;33mProduct Name\033[0m" << " | " << setw(15) << "\033[1;33mProduct Price\033[0m" << " |" << endl;
@@ -143,7 +143,7 @@ choiceMenu:
         case 4:
             cout << intVal << endl;
             cout << "\n";
-            cout << "\033[1;32;47m " << setw(55) << "See complete items list selected" << "Order List have : " << noOfItemInList << " items \033[0m\n";
+            cout << "\033[1;34;47m " << setw(55) << "See complete items list selected" << "Order List have : " << noOfItemInList << " items \033[0m\n";
             cout << "-----------------------------------------------------------------------------------";
             getCompleteList();
             goto choiceMenu;
@@ -253,45 +253,55 @@ addItemMenu:
 void deleteItem()
 {
     cout << "\n\n";
-    int productCode;
-EnterProductCode:
-    cout
-        << "\033[1;36mEnter Product Code : \033[0m";
-    if (cin >> productCode)
+    if (noOfItemInList >= 1)
     {
-        // check if the product exist with entered product code
-        bool matched = true;
-        for (int i = 0; i < 5; i++)
+        int productCode;
+    EnterProductCode:
+        cout
+            << "\033[1;36mEnter Product Code : \033[0m";
+        if (cin >> productCode)
         {
-            if (item[i].product_code == productCode)
+            // check if the product exist with entered product code
+            bool matched = true;
+            for (int i = 0; i < 5; i++)
             {
-                itemList[i].product_price = 0;
-                MessageBeep(MB_OK); // confirm item is added
+                if (item[i].product_code == productCode)
+                {
+                    totalPrice - itemList[i].product_price;
+                    itemList[i].product_price = 0;
 
-                cout
-                    << "\n"
-                    << itemList[i].product_name << setw(60) << " \033[1;32mDeleted from order list\033[0m" << "\033[1;32mTotal item is order list : \033[0m" << noOfItemInList - 1 << "\n";
-                cout << "-----------------------------------------------------------------------------------\n";
-                break; // so that only one product can be removed at once
-            }
-            else
-            {
-                matched = false;
-            }
+                    MessageBeep(MB_OK); // confirm item is added
 
-            if (matched == false)
-            {
-                MessageBeep(MB_ICONERROR);
-                cout << "\n\n\033[5;31mEnter valid product code to delete item \033[0m\n";
-                goto EnterProductCode;
+                    cout
+                        << "\n"
+                        << itemList[i].product_name << setw(60) << " \033[1;32mDeleted from order list\033[0m" << "\033[1;32mTotal item is order list : \033[0m" << noOfItemInList - 1 << "\n";
+                    cout << "-----------------------------------------------------------------------------------\n";
+                    break; // so that only one product can be removed at once
+                }
+                else
+                {
+                    matched = false;
+                }
+
+                if (matched == false)
+                {
+                    MessageBeep(MB_ICONERROR);
+                    cout << "\n\n\033[5;31mEnter valid product code to delete item \033[0m\n";
+                    goto EnterProductCode;
+                }
             }
+        }
+        else
+        {
+            MessageBeep(MB_ICONERROR);
+            cout << "\n\n\033[5;31mEnter valid product code to delete item only 3 digit allowed \033[0m\n";
+            // goto EnterProductCode;
         }
     }
     else
     {
         MessageBeep(MB_ICONERROR);
-        cout << "\n\n\033[5;31mEnter valid product code to delete item only 3 digit allowed \033[0m\n";
-        // goto EnterProductCode;
+        cout << "\n\033[5;31mThere is no item in order cart! \033[0m\n\n";
     }
 }
 
@@ -346,8 +356,9 @@ void commandHandler(int argc, char *argv[])
         else
         {
             cout << "\n\n";
-            cout << "\033[5;31mThis command is not recognized as any valid command \033[0m\n";
+            cout << argv[i] << " \033[5;31mThis command is not recognized as any valid command \033[0m\n";
             cout << "\033[1;34mSee help section to know more information of commands\033[0m\n";
+            break;
         }
     }
 }
